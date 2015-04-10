@@ -1,6 +1,6 @@
-# Excel Streaming Reader
+# JExcel Streaming Reader for JAVA 6 based on monitorjbl xlsx-streamer
 
-If you've used [Apache POI](http://poi.apache.org) in the past to read in Excel files, you probably noticed that it's not very memory efficient. Reading in an entire workbook will cause a severe memory usage spike, which can wreak havoc on a server. 
+If you've used [Apache POI](http://poi.apache.org) in the past to read in Excel files, you probably noticed that it's not very memory efficient. Reading in an entire workbook will cause a severe memory usage spike, which can wreak havoc on a server.
 
 There are plenty of good reasons for why Apache has to read in the whole workbook, but most of them have to do with the fact that the library allows you to read and write with random addresses. If (and only if) you just want to read the contents of an Excel file in a fast and memory effecient way, you probably don't need this ability. Unfortunately, the only thing in the POI library for reading a streaming workbook requires your code to use a SAX-like parser. All of the friendly classes like `Row` and `Cell` are missing from that API.
 
@@ -8,18 +8,18 @@ This library serves as a wrapper around that streaming API while preserving the 
 
 # Include
 
-This library is available from from Maven Central, and you can optionally install it yourself. The Maven installation instructions can be found on the [release](https://github.com/monitorjbl/excel-streaming-reader/releases) page.
+This library is available from from Maven Central, and you can optionally install it yourself. The Maven installation instructions can be found on the [release](https://github.com/jeancl/excel-streaming-reader/releases) page.
 
 To use it, add this to your POM:
 
 ```
 <dependencies>
   <dependency>
-    <groupId>com.monitorjbl</groupId>
-    <artifactId>xlsx-streamer</artifactId>
-    <version>0.2.6</version>
+    <groupId>com.jeancl</groupId>
+    <artifactId>jxlsx-streamer</artifactId>
+    <version>0.0.1</version>
   </dependency>
-</dependencies>  
+</dependencies>
 ```
 
 # Usage
@@ -90,9 +90,9 @@ This library uses SLF4j logging. This is a rare use case, but you can plug in yo
 ```
 <dependencies>
   <dependency>
-    <groupId>com.monitorjbl</groupId>
-    <artifactId>xlsx-streamer</artifactId>
-    <version>0.2.6</version>
+    <groupId>com.jeancl</groupId>
+    <artifactId>jxlsx-streamer</artifactId>
+    <version>0.0.1</version>
   </dependency>
   <dependency>
     <groupId>org.slf4j</groupId>
@@ -131,10 +131,10 @@ If you need more control over how the file is created/disposed of, there is an o
 ```java
 File f = new File("/path/to/workbook.xlsx");
 StreamingReader reader = StreamingReader.builder()
-        .rowCacheSize(100)    
-        .bufferSize(4096)     
-        .sheetIndex(0)        
-        .read(f);            
+        .rowCacheSize(100)
+        .bufferSize(4096)
+        .sheetIndex(0)
+        .read(f);
 ```
 
 This library will ONLY work with XLSX files. The older XLS format is not capable of being streamed.

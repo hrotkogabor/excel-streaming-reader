@@ -1,11 +1,27 @@
-package com.monitorjbl.xlsx;
+package com.jeancl.xlsx;
 
-import com.monitorjbl.xlsx.exceptions.CloseException;
-import com.monitorjbl.xlsx.exceptions.MissingSheetException;
-import com.monitorjbl.xlsx.exceptions.OpenException;
-import com.monitorjbl.xlsx.exceptions.ReadException;
-import com.monitorjbl.xlsx.impl.StreamingCell;
-import com.monitorjbl.xlsx.impl.StreamingRow;
+import static com.jeancl.xlsx.XmlUtils.document;
+import static com.jeancl.xlsx.XmlUtils.searchForNodeList;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -19,35 +35,19 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-
-import static com.monitorjbl.xlsx.XmlUtils.document;
-import static com.monitorjbl.xlsx.XmlUtils.searchForNodeList;
+import com.jeancl.xlsx.exceptions.CloseException;
+import com.jeancl.xlsx.exceptions.MissingSheetException;
+import com.jeancl.xlsx.exceptions.OpenException;
+import com.jeancl.xlsx.exceptions.ReadException;
+import com.jeancl.xlsx.impl.StreamingCell;
+import com.jeancl.xlsx.impl.StreamingRow;
 
 /**
  * Streaming Excel workbook implementation. Most advanced features of POI are not supported.
  * Use this only if your application can handle iterating through an entire workbook, row by
  * row.
  */
-public class StreamingReader implements Iterable<Row>, AutoCloseable {
+public class StreamingReader implements Iterable<Row> {
   private static final Logger log = LoggerFactory.getLogger(StreamingReader.class);
 
   private SharedStringsTable sst;
@@ -56,7 +56,8 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
   private boolean nextIsString;
 
   private int rowCacheSize;
-  private List<Row> rowCache = new ArrayList<>();
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private List<Row> rowCache = new ArrayList();
   private Iterator<Row> rowCacheIterator;
   private StreamingRow currentRow;
   private StreamingCell currentCell;
@@ -74,10 +75,11 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
    *
    * @return
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   private boolean getRow() {
     try {
       int iters = 0;
-      rowCache = new ArrayList<>();
+      rowCache = new ArrayList();
       while (rowCache.size() < rowCacheSize && parser.hasNext()) {
         handleEvent(parser.nextEvent());
         iters++;
@@ -85,9 +87,11 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
       rowCache.add(currentRow);
       rowCacheIterator = rowCache.iterator();
       return iters > 0;
-    } catch (XMLStreamException | SAXException e) {
+    } catch (XMLStreamException e) {
       log.debug("End of stream");
-    }
+    } catch (SAXException e) {
+    	log.debug("End of stream");
+	}
     return false;
   }
 
@@ -156,7 +160,6 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
    *
    * @throws com.monitorjbl.xlsx.exceptions.CloseException if there is an issue closing the stream
    */
-  @Override
   public void close() {
     try {
       parser.close();
@@ -171,8 +174,8 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
   }
 
   static File writeInputStreamToFile(InputStream is, int bufferSize) throws IOException {
-    File f = Files.createTempFile("tmp-", ".xlsx").toFile();
-    try (FileOutputStream fos = new FileOutputStream(f)) {
+	  File f = File.createTempFile("tmp-", ".xlsx");
+      FileOutputStream fos = new FileOutputStream(f);
       int read;
       byte[] bytes = new byte[bufferSize];
       while ((read = is.read(bytes)) != -1) {
@@ -181,7 +184,6 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
       is.close();
       fos.close();
       return f;
-    }
   }
 
   public static Builder builder() {
@@ -306,8 +308,10 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
         return new StreamingReader(sst, parser, rowCacheSize);
       } catch (IOException e) {
         throw new OpenException("Failed to open file", e);
-      } catch (OpenXML4JException | XMLStreamException e) {
+      } catch (OpenXML4JException e) {
         throw new ReadException("Unable to read workbook", e);
+      } catch (XMLStreamException e) {
+    	  throw new ReadException("Unable to read workbook", e);
       }
     }
 
@@ -318,7 +322,7 @@ public class StreamingReader implements Iterable<Row>, AutoCloseable {
         //This file is separate from the worksheet data, and should be fairly small
         NodeList nl = searchForNodeList(document(reader.getWorkbookData()), "/workbook/sheets/sheet");
         for (int i = 0; i < nl.getLength(); i++) {
-          if (Objects.equals(nl.item(i).getAttributes().getNamedItem("name").getTextContent(), sheetName)) {
+          if (nl.item(i).getAttributes().getNamedItem("name").getTextContent().equals(sheetName)) {
             index = i;
           }
         }
