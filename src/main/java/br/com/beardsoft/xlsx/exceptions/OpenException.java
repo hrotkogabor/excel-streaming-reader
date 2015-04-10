@@ -1,4 +1,4 @@
-package com.jeancl.xlsx.exceptions;
+package br.com.beardsoft.xlsx.exceptions;
 
 public class OpenException extends RuntimeException {
 

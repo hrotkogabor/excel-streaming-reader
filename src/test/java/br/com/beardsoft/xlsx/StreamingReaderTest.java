@@ -1,6 +1,7 @@
-package com.jeancl.xlsx;
+package br.com.beardsoft.xlsx;
 
-import com.jeancl.xlsx.exceptions.MissingSheetException;
+import br.com.beardsoft.xlsx.StreamingReader;
+import br.com.beardsoft.xlsx.exceptions.MissingSheetException;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

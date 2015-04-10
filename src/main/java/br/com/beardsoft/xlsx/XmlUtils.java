@@ -1,6 +1,6 @@
-package com.jeancl.xlsx;
+package br.com.beardsoft.xlsx;
 
-import com.jeancl.xlsx.exceptions.ParseException;
+import br.com.beardsoft.xlsx.exceptions.ParseException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;

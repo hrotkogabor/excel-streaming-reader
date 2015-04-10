@@ -1,6 +1,6 @@
-package com.jeancl.xlsx.impl;
+package br.com.beardsoft.xlsx.impl;
 
-import com.jeancl.xlsx.exceptions.NotSupportedException;
+import br.com.beardsoft.xlsx.exceptions.NotSupportedException;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;

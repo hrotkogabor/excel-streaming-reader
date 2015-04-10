@@ -1,7 +1,7 @@
-package com.jeancl.xlsx;
+package br.com.beardsoft.xlsx;
 
-import static com.jeancl.xlsx.XmlUtils.document;
-import static com.jeancl.xlsx.XmlUtils.searchForNodeList;
+import static br.com.beardsoft.xlsx.XmlUtils.document;
+import static br.com.beardsoft.xlsx.XmlUtils.searchForNodeList;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,12 +35,12 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.jeancl.xlsx.exceptions.CloseException;
-import com.jeancl.xlsx.exceptions.MissingSheetException;
-import com.jeancl.xlsx.exceptions.OpenException;
-import com.jeancl.xlsx.exceptions.ReadException;
-import com.jeancl.xlsx.impl.StreamingCell;
-import com.jeancl.xlsx.impl.StreamingRow;
+import br.com.beardsoft.xlsx.exceptions.CloseException;
+import br.com.beardsoft.xlsx.exceptions.MissingSheetException;
+import br.com.beardsoft.xlsx.exceptions.OpenException;
+import br.com.beardsoft.xlsx.exceptions.ReadException;
+import br.com.beardsoft.xlsx.impl.StreamingCell;
+import br.com.beardsoft.xlsx.impl.StreamingRow;
 
 /**
  * Streaming Excel workbook implementation. Most advanced features of POI are not supported.
