@@ -15,7 +15,7 @@ To use it, add this to your POM:
 ```
 <dependencies>
   <dependency>
-    <groupId>com.jeancl</groupId>
+    <groupId>br.com.beardsoft</groupId>
     <artifactId>jxlsx-streamer</artifactId>
     <version>0.0.1</version>
   </dependency>
@@ -90,7 +90,7 @@ This library uses SLF4j logging. This is a rare use case, but you can plug in yo
 ```
 <dependencies>
   <dependency>
-    <groupId>com.jeancl</groupId>
+    <groupId>br.com.beardsoft</groupId>
     <artifactId>jxlsx-streamer</artifactId>
     <version>0.0.1</version>
   </dependency>
