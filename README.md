@@ -27,7 +27,7 @@ To use it, add this to your POM:
 This library is very specific in how it is meant to be used. You should initialize it like so:
 
 ```java
-import com.monitorjbl.xlsx.StreamingReader;
+import br.com.beardsoft.xlsx.StreamingReader;
 
 InputStream is = new FileInputStream(new File("/path/to/workbook.xlsx"));
 StreamingReader reader = StreamingReader.builder()
