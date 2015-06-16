@@ -64,6 +64,8 @@ public class StreamingReader implements Iterable<Row> {
 
   private File tmp;
 
+  private static String currentSheetName;
+
   private StreamingReader(SharedStringsTable sst, XMLEventReader parser, int rowCacheSize) {
     this.sst = sst;
     this.parser = parser;
@@ -93,6 +95,10 @@ public class StreamingReader implements Iterable<Row> {
     	log.debug("End of stream");
 	}
     return false;
+  }
+
+  public String getSheetName() {
+	  return currentSheetName;
   }
 
   /**
@@ -317,10 +323,13 @@ public class StreamingReader implements Iterable<Row> {
 
     InputStream findSheet(XSSFReader reader) throws IOException, InvalidFormatException {
       int index = sheetIndex;
+
+      //This file is separate from the worksheet data, and should be fairly small
+      NodeList nl = searchForNodeList(document(reader.getWorkbookData()), "/workbook/sheets/sheet");
+
       if (sheetName != null) {
         index = -1;
-        //This file is separate from the worksheet data, and should be fairly small
-        NodeList nl = searchForNodeList(document(reader.getWorkbookData()), "/workbook/sheets/sheet");
+
         for (int i = 0; i < nl.getLength(); i++) {
           if (nl.item(i).getAttributes().getNamedItem("name").getTextContent().equals(sheetName)) {
             index = i;
@@ -336,11 +345,13 @@ public class StreamingReader implements Iterable<Row> {
       int i = 0;
       while (iter.hasNext()) {
         InputStream is = iter.next();
-        if (i++ == index) {
+        if (i == index) {
+          currentSheetName = nl.item(i).getAttributes().getNamedItem("name").getTextContent();
           sheet = is;
           log.debug("Found sheet at index [" + sheetIndex + "]");
           break;
         }
+        i++;
       }
       return sheet;
     }

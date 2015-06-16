@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.beardsoft</groupId>
 	<artifactId>jxlsx-streamer</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>JStreaming Excel reader</name>
 	<description>Streaming Excel reader adaptation from monitorjbl to JAVA 6</description>
 	<url>https://github.com/jeancl/excel-streaming-reader</url>

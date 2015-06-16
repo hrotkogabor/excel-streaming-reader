@@ -17,7 +17,7 @@ To use it, add this to your POM:
   <dependency>
     <groupId>br.com.beardsoft</groupId>
     <artifactId>jxlsx-streamer</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
   </dependency>
 </dependencies>
 ```

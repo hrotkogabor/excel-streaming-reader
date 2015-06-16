@@ -158,6 +158,8 @@ public class StreamingReaderTest {
 		StreamingReader reader = StreamingReader.builder().sheetIndex(0)
 				.read(is);
 
+		assertEquals("SheetAlpha", reader.getSheetName());
+
 		List<List<Cell>> obj = new ArrayList<List<Cell>>();
 
 		for (Row r : reader) {
