@@ -48,7 +48,8 @@ for (Row r : reader) {
 }
 ```
 
-The StreamingReader is an autoclosable resource, and it's important that you close it to free the filesystem resource it consumed. With Java 7, you can do this:
+The StreamingReader is an autoclosable resource, and it's important that you close it to free the filesystem resource it consumed.
+You have to call **close** on reader like this:
 
 ```java
 try (
@@ -64,6 +65,7 @@ try (
       System.out.println(c.getStringCellValue());
     }
   }
+  reader.close(); // !!
 }
 ```
 

@@ -52,6 +52,9 @@ public class StreamingReaderTest {
 			}
 			obj.add(o);
 		}
+        
+        // delete temp files
+        reader.close();
 
 		assertEquals(6, obj.size());
 		List<Cell> row;
@@ -124,6 +127,9 @@ public class StreamingReaderTest {
 			obj.add(o);
 		}
 
+        // delete temp files
+        reader.close();
+        
 		assertEquals(2, obj.size());
 		List<Cell> row;
 
@@ -169,7 +175,10 @@ public class StreamingReaderTest {
 			}
 			obj.add(o);
 		}
-
+        
+        // delete temp files
+        reader.close();
+        
 		assertEquals(1, obj.size());
 		List<Cell> row;
 
@@ -196,6 +205,9 @@ public class StreamingReaderTest {
 			obj.add(o);
 		}
 
+        // delete temp files
+        reader.close();
+        
 		assertEquals(1, obj.size());
 		List<Cell> row;
 
@@ -222,6 +234,9 @@ public class StreamingReaderTest {
 			obj.add(o);
 		}
 
+        // delete temp files
+        reader.close();
+        
 		assertEquals(1, obj.size());
 		List<Cell> row;
 
@@ -248,6 +263,9 @@ public class StreamingReaderTest {
 			obj.add(o);
 		}
 
+        // delete temp files
+        reader.close();
+        
 		assertEquals(1, obj.size());
 		List<Cell> row;
 
@@ -263,6 +281,8 @@ public class StreamingReaderTest {
 				"src/test/resources/sheets.xlsx"));
 		StreamingReader reader = StreamingReader.builder()
 				.sheetName("adsfasdfasdfasdf").read(is);
+        // delete temp files
+        reader.close();
 		fail("Should have failed");
 	}
 
@@ -273,6 +293,8 @@ public class StreamingReaderTest {
 		try {
 			StreamingReader reader = StreamingReader.builder()
 					.sheetName("adsfasdfasdfasdf").read(f);
+            // delete temp files
+            reader.close();
 			fail("Should have failed");
 		} catch (MissingSheetException e) {
 			assertTrue(f.exists());
