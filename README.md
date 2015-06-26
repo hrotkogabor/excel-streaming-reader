@@ -52,14 +52,14 @@ The StreamingReader is an autoclosable resource, and it's important that you clo
 You have to call **close** on reader like this:
 
 ```java
-try (
+
   InputStream is = new FileInputStream(new File("/path/to/workbook.xlsx"));
   StreamingReader reader = StreamingReader.builder()
           .rowCacheSize(100)
           .bufferSize(4096)
           .sheetIndex(0)
           .read(is);
-) {
+
   for (Row r : reader) {
     for (Cell c : r) {
       System.out.println(c.getStringCellValue());
